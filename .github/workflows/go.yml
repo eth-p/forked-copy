@@ -14,7 +14,19 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os:
+         - runner: macos-latest
+         - runner: ubuntu-latest
+         - runner: windows-latest
+         - runner: macos-latest
+           filesystem: APFS
+           copymethod: ReflinkCopy
+         - runner: ubuntu-latest
+           filesystem: btrfs
+           copymethod: ReflinkCopy
+         - runner: ubuntu-latest
+           filesystem: ext4 # tests fallback from reflink
+           copymethod: BestAvailable
         go: ['1.18', '1.19', '1.20']
     steps:
     - name: Set up Go

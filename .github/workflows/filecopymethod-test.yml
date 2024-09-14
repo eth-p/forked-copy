@@ -27,6 +27,9 @@ jobs:
          - runner: ubuntu-latest
            filesystem: btrfs
            copymethod: ReflinkCopy
+         - runner: ubuntu-latest
+           filesystem: ext4 # tests fallback from reflink
+           copymethod: BestAvailable
     steps:
     - name: Set up Go
       uses: actions/setup-go@v4

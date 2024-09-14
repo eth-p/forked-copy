@@ -63,3 +63,17 @@ var CopyBytes = FileCopyMethod{
 		return
 	},
 }
+
+// BestAvailable copies the file using the best available method.
+var BestAvailable = FileCopyMethod{
+	fcopy: func(src, dest string, info os.FileInfo, opt Options) (err error, skipFile bool) {
+		// Try reflink first.
+		err, skipFile = ReflinkCopy.fcopy(src, dest, info, opt)
+		if err == nil {
+			return // copy is done
+		}
+
+		// Fall back to byte copy.
+		return CopyBytes.fcopy(src, dest, info, opt)
+	},
+}
